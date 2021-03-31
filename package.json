@@ -1,0 +1,31 @@
+{
+  "name": "@guidesmiths/systemic-aws-s3",
+  "version": "1.0.0",
+  "description": "A systemic component for AWS S3 service",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guidesmiths/systemic-aws-s3.git"
+  },
+  "keywords": [
+    "systemic",
+    "aws",
+    "s3"
+  ],
+  "contributors": [
+    {
+      "name": "Íñigo Marquínez Prado",
+      "email": "inigo.marquinez@guidesmiths.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guidesmiths/systemic-aws-s3/issues"
+  },
+  "homepage": "https://github.com/guidesmiths/systemic-aws-s3#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.9.0",
+    "debug": "^4.3.1",
+    "require-all": "^3.0.0"
+  }
+}
