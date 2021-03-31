@@ -5,12 +5,12 @@ const commands = require('require-all')(__dirname + '/commands');
 
 let client = null;
 
-module.exports = ({
-  config: {
-    awsRegion
-  },
-}) => {
-  const start = async () => {
+module.exports = () => {
+  const start = async ({
+     config: {
+       awsRegion
+     },
+   }) => {
     debug('Initializing S3Client');
     client = new S3Client({ region: awsRegion });
 
