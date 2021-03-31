@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A systemic component for AWS S3 service",
   "main": "index.js",
+  "scripts": {
+    "infra:up": "docker-compose --file ./docker/test/docker-compose.yaml pull && docker-compose --file ./docker/test/docker-compose.yaml up -d --force-recreate",
+    "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guidesmiths/systemic-aws-s3.git"
