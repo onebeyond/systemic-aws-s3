@@ -2,12 +2,10 @@ const path = require('path');
 
 module.exports = {
 	clearMocks: true,
-	collectCoverageFrom: ['**/components/**/*.js'],
 	coverageDirectory: 'coverage',
-	coveragePathIgnorePatterns: ['.*/__test__/.*'],
 	testEnvironment: 'node',
 	rootDir: path.join(__dirname, '..'),
-	roots: [path.join(__dirname, '../components')],
+	roots: [path.join(__dirname, '..')],
 	testMatch: ['**/__tests__/**.test.js'],
 	globalSetup: require.resolve('./setup'),
 	setupFilesAfterEnv: [require.resolve('./setup-env')],
