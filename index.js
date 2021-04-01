@@ -8,11 +8,23 @@ let client = null;
 module.exports = () => {
   const start = async ({
      config: {
-       awsRegion
+        region,
+        endpoint,
+        credentials: {
+            secretAccessKey,
+            accessKeyId,
+        },
      },
    }) => {
     debug('Initializing S3Client');
-    client = new S3Client({ region: awsRegion });
+    client = new S3Client({
+        region,
+        endpoint,
+        credentials: {
+            secretAccessKey,
+            accessKeyId,
+        },
+    });
 
     return {
       client,
