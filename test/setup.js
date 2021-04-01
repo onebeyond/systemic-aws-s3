@@ -5,5 +5,5 @@ const setUpTest = async () => await waitOn({
   timeout: '10000',
 });
 
-(async () => setUpTest())()
+module.exports = setUpTest
 
