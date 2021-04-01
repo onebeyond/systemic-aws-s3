@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "infra:up": "docker-compose --file ./docker/test/docker-compose.yaml pull && docker-compose --file ./docker/test/docker-compose.yaml up -d --force-recreate",
-    "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down"
+    "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watchAll"
   },
   "repository": {
     "type": "git",
