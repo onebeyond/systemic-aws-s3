@@ -1,30 +1,14 @@
 const debug = require('debug')('systemic-aws-s3');
-const { S3Client, ListObjectsV2Command } = require("@aws-sdk/client-s3");
+const { S3Client } = require("@aws-sdk/client-s3");
 
 const commands = require('require-all')(__dirname + '/commands');
 
 let client = null;
 
 module.exports = () => {
-  const start = async ({
-     config: {
-        region,
-        endpoint,
-        credentials: {
-            secretAccessKey,
-            accessKeyId,
-        },
-     },
-   }) => {
+  const start = async ({ config }) => {
     debug('Initializing S3Client');
-    client = new S3Client({
-        region,
-        endpoint,
-        credentials: {
-            secretAccessKey,
-            accessKeyId,
-        },
-    });
+    client = new S3Client(config);
 
     return {
       client,
