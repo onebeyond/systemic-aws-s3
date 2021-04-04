@@ -1,5 +1,6 @@
 const {
     CreateBucketCommand,
+    DeleteBucketCommand,
     ListObjectsCommand,
     DeleteObjectCommand,
     PutObjectCommand
@@ -30,6 +31,12 @@ describe('Systemic S3 Component Tests', () => {
         }));
     });
 
+    afterAll(async () => {
+        await s3.client.send(new DeleteBucketCommand({
+            Bucket: bucketName,
+        }));
+    });
+
     beforeEach(async () => {
         const res = await s3.client.send(new ListObjectsCommand({
             Bucket: bucketName,
@@ -42,7 +49,6 @@ describe('Systemic S3 Component Tests', () => {
                     Key: object.Key,
                 })))
             );
-
         }
     });
 
