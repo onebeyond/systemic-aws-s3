@@ -19,8 +19,6 @@ jobs:
         run: npm ci --only=production
       - name: Run Build
         run: npm run build
-      - name: Run tests
-        run: npm test
       - name: Publish package
         run: npm publish --ignore-scripts --access public
         env:
