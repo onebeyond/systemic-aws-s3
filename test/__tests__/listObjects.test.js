@@ -1,10 +1,11 @@
 const {
-    CreateBucketCommand,
-    DeleteBucketCommand,
     ListObjectsCommand,
     DeleteObjectCommand,
     PutObjectCommand
 } = require("@aws-sdk/client-s3");
+
+const {createBucket} = require('../helpers/createBucket')
+const {deleteBucket} = require('../helpers/deleteBucket')
 
 const initS3 = require('../../index');
 
@@ -26,15 +27,11 @@ describe('Systemic S3 Component Tests', () => {
             }
         });
 
-        await s3.client.send(new CreateBucketCommand({
-            Bucket: bucketName,
-        }));
+        await createBucket(s3,bucketName)
     });
 
     afterAll(async () => {
-        await s3.client.send(new DeleteBucketCommand({
-            Bucket: bucketName,
-        }));
+        await deleteBucket(s3,bucketName)
     });
 
     beforeEach(async () => {
