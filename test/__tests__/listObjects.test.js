@@ -1,40 +1,25 @@
 const {
-    CreateBucketCommand,
-    DeleteBucketCommand,
     ListObjectsCommand,
     DeleteObjectCommand,
     PutObjectCommand
 } = require("@aws-sdk/client-s3");
 
-const initS3 = require('../../index');
+const {createBucket} = require('../helpers/createBucket')
+const {deleteBucket} = require('../helpers/deleteBucket')
+const {startS3Component} = require('../helpers/startS3Component')
+const localstackConfig = require('../fixtures/localstackConfig')
 
-const s3Component = initS3();
 const bucketName = 'test-bucket';
 let s3;
 
-describe('Systemic S3 Component Tests', () => {
+describe('Systemic S3 - List object tests', () => {
     beforeAll(async () => {
-        s3 = await s3Component.start({
-            config: {
-                region: 'us-east-1',
-                endpoint: 'http://localhost:4566',
-                credentials: {
-                    secretAccessKey: 'test',
-                    accessKeyId: 'test',
-                },
-                forcePathStyle: true,
-            }
-        });
-
-        await s3.client.send(new CreateBucketCommand({
-            Bucket: bucketName,
-        }));
+        s3 = await startS3Component(localstackConfig);
+        await createBucket(s3,bucketName)
     });
 
     afterAll(async () => {
-        await s3.client.send(new DeleteBucketCommand({
-            Bucket: bucketName,
-        }));
+        await deleteBucket(s3,bucketName)
     });
 
     beforeEach(async () => {

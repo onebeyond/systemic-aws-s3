@@ -13,6 +13,7 @@ module.exports = () => {
     return {
       client,
       listObjects: commands['listObjects'](client),
+      getObject :commands['getObject'](client)
     };
   };
 
