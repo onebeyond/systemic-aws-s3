@@ -15,8 +15,6 @@ module.exports = () => {
     return {
       client,
       commandExecutor: commands['commandExecutor'](aggregatedS3),
-      listObjects: commands['listObjects'](client),
-      uploadObject :commands['uploadObject'](client)
     };
   };
 

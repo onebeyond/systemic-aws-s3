@@ -25,16 +25,23 @@ describe('Systemic S3 - Command executor', () => {
 
   beforeEach(async () => {
 
-    const res = await s3.client.send(new ListObjectsCommand({
-      Bucket: bucketName,
-    }));
+    const listObjectConfig = {
+      commandParams: { Bucket: bucketName },
+      commandName: 'listObjects'
+    }
+    const res = await s3.commandExecutor(listObjectConfig);
+
+    const commandDeleteConfig = (object) => ({
+      commandParams: {
+        Bucket: bucketName,
+        Key: object.Key,
+      },
+      commandName: 'deleteObject'
+    })
 
     if (res.Contents) {
       await Promise.all(
-        res.Contents.map((object) => s3.client.send(new DeleteObjectCommand({
-          Bucket: bucketName,
-          Key: object.Key,
-        })))
+        res.Contents.map((object) => s3.commandExecutor(commandDeleteConfig(object)))
       );
     }
   });
@@ -42,8 +49,10 @@ describe('Systemic S3 - Command executor', () => {
   it('should execute the "GetObject" command and retrieve it', async () => {
     const bucketObjectKey = 'example1.txt'
     const bucketObjectBody = 'Example 1 text'
-    await s3.uploadObject({bucketName, bucketObjectKey, bucketObjectBody});
-    const commandParams = { Bucket: bucketName, Key: bucketObjectKey }
+    const commandParamsUpload = {Bucket: bucketName, Key: bucketObjectKey, Body: bucketObjectBody}
+
+    await s3.commandExecutor({commandParams: commandParamsUpload, commandName: 'putObject'});
+    const commandParams = {Bucket: bucketName, Key: bucketObjectKey}
     const {Body} = await s3.commandExecutor({commandParams, commandName: 'getObject'})
 
     const response = await streamToString(Body)
@@ -52,38 +61,35 @@ describe('Systemic S3 - Command executor', () => {
 
   it('should fail trying to get an object not stored in the bucket', async () => {
     const bucketObjectKey = 'example1.txt'
-    const commandParams = { Bucket: bucketName, Key: bucketObjectKey }
+    const commandParams = {Bucket: bucketName, Key: bucketObjectKey}
     const commandName = 'getObject'
     await expect(s3.commandExecutor({commandParams, commandName}))
       .rejects
       .toThrowError(new Error('NoSuchKey'));
   });
 
-  it.skip('should list 2 objects stored in the bucket', async () => {
-    const bucketObjectKey1 = 'example1.txt'
-    const bucketObjectBody1 = 'Example 1 text'
-    const bucketObjectKey2 = 'example2.txt'
-    const bucketObjectBody2 = 'Example 2 text'
+  it('should list 2 objects stored in the bucket', async () => {
 
-    await s3.uploadObject({
+    const commandParams1 = {
       Bucket: bucketName,
-      Key: bucketObjectKey1,
-      Body: bucketObjectBody1
-    });
+      Key: 'example1.txt',
+      Body: 'Example 1 text'
+    }
 
-    await s3.client.send(new PutObjectCommand({
+    const commandParams2 = {
       Bucket: bucketName,
-      Key: bucketObjectKey2,
-      Body: bucketObjectBody2
-    }));
+      Key: 'example2.txt',
+      Body: 'Example 2 text'
+    }
 
-    const res = await s3.listObjects({bucketName});
+    await s3.commandExecutor({commandParams: commandParams1, commandName: 'putObject'})
+    await s3.commandExecutor({commandParams: commandParams2, commandName: 'putObject'})
+
+    const res = await s3.commandExecutor({commandParams: {Bucket: bucketName}, commandName: 'listObjects'})
 
     expect(res.Contents).toHaveLength(2);
     expect(res.Contents[0].Key).toBe('example1.txt');
     expect(res.Contents[1].Key).toBe('example2.txt');
   });
-
-
 
 });
