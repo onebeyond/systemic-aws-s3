@@ -1,8 +1,10 @@
-const {CreateBucketCommand} = require("@aws-sdk/client-s3");
-const createBucket = (s3, bucketName) => s3.client.send(new CreateBucketCommand({
-  Bucket: bucketName,
-}));
-
+const commandConfig = (bucketName) => ({
+  commandParams: {
+    Bucket: bucketName
+  },
+  commandName:'createBucket'
+})
+const createBucket = (s3, bucketName) => s3.commandExecutor(commandConfig(bucketName))
 
 module.exports = {
   createBucket
