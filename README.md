@@ -1,16 +1,75 @@
 # Systemic AWS S3
 
-Systemic wrapper for [AWS S3 SDK v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html).
-## How to test
+A [Systemic](https://guidesmiths.github.io/systemic/#/) component for the [AWS S3 SDK v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html).
 
-Set up / tear down local resources running
+## How to use it
+
+### Configuration
+
+A typical, simple configuration looks like this:
+
+```json
+{
+  region: 'us-east-1',
+  credentials: {
+    secretAccessKey: 'test',
+    accessKeyId: 'test'
+  }
+}
+```
+
+[Here](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/interfaces/s3clientconfig.html) you can finde the complete configuration interface of S3Client class constructor that set the region, credentials and other options.
+
+### Initialize the component
+
+As with any other [Systemic component](https://guidesmiths.github.io/systemic/#/?id=components), you can run it with the `start` method:
+
+```js
+const initAWSS3 = require('systemic-aws-s3');
+const { start } = initAWSS3();
+
+const api = await start({ config }); // configuration similar to the one above
+```
+
+### Call the API commands
+
+As the AWS API has dozens of commands, intead of having one wrapper for each of them, the component exposes one single command `commandExecutor` that can be used to call any of the commands exposed by the api:
+
+```js
+const res = await api.commandExecutor({
+  commandParams: { <params of the method> },
+  commandName: <name of the method>
+});
+```
+
+For example, to list all the objects in a specific bucket:
+
+```js
+const listObjectConfig = {
+  commandParams: { Bucket: bucketName },
+  commandName: 'listObjects'
+}
+const res = await api.commandExecutor(listObjectConfig);
+```
+
+You can check all the available commands [here](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/classes/s3.html).
+
+### Custom commands
+
+In the future, this component will also expose some custom commands not supported by the official API.
+
+## Guide for developers
+
+### How to test it
+
+Set up / tear down local resources running:
 
 ```bash
 npm run infra:up
 npm run infra:down
 ```
 
-Once resources are up you can test the component running one of this commands
+Once resources are up you can test the component running one of this commands:
 
 ```bash
 # all tests will be executed once
