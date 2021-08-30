@@ -6,6 +6,7 @@ const {
 
 const {createBucket} = require('../helpers/createBucket')
 const {deleteBucket} = require('../helpers/deleteBucket')
+const {emptyBucket} = require('../helpers/emptyBucket')
 const {startS3Component} = require('../helpers/startS3Component')
 const localstackConfig = require('../fixtures/localstackConfig')
 const {streamToString} = require("../helpers/streamToString");
@@ -20,30 +21,12 @@ describe('Systemic S3 - Command executor', () => {
   });
 
   afterAll(async () => {
+    await emptyBucket(s3, bucketName)
     await deleteBucket(s3, bucketName)
   });
 
   beforeEach(async () => {
-
-    const listObjectConfig = {
-      commandParams: { Bucket: bucketName },
-      commandName: 'listObjects'
-    }
-    const res = await s3.commandExecutor(listObjectConfig);
-
-    const commandDeleteConfig = (object) => ({
-      commandParams: {
-        Bucket: bucketName,
-        Key: object.Key,
-      },
-      commandName: 'deleteObject'
-    })
-
-    if (res.Contents) {
-      await Promise.all(
-        res.Contents.map((object) => s3.commandExecutor(commandDeleteConfig(object)))
-      );
-    }
+    await emptyBucket(s3, bucketName)
   });
 
   it('should execute the "GetObject" command and retrieve it', async () => {
