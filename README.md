@@ -19,3 +19,4 @@ npm run test
 # tests will be executed every time code changes (useful when coding)
 npm run test:watch
 ```
+
