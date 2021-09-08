@@ -1,9 +1,3 @@
-const {
-  ListObjectsCommand,
-  DeleteObjectCommand,
-  PutObjectCommand
-} = require("@aws-sdk/client-s3");
-
 const {createBucket} = require('../helpers/createBucket')
 const {deleteBucket} = require('../helpers/deleteBucket')
 const {emptyBucket} = require('../helpers/emptyBucket')
@@ -73,6 +67,12 @@ describe('Systemic S3 - Command executor', () => {
     expect(res.Contents).toHaveLength(2);
     expect(res.Contents[0].Key).toBe('example1.txt');
     expect(res.Contents[1].Key).toBe('example2.txt');
+  });
+
+  it('should throw an error trying to execute an unexisting command', async () => {
+      await expect(s3.commandExecutor({commandParams: {}, commandName: 'unexistingCommand'}))
+        .rejects
+        .toThrowError('client[commandName] is not a function');
   });
 
 });
