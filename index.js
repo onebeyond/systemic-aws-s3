@@ -1,7 +1,7 @@
 const debug = require('debug')('systemic-aws-s3');
 const { S3, S3Client } = require("@aws-sdk/client-s3");
 
-const commands = require('require-all')(__dirname + '/commands');
+const commandExecutor = require('./commands/commandExecutor');
 
 let client = null;
 let aggregatedS3 = null;
@@ -14,7 +14,7 @@ module.exports = () => {
 
     return {
       client,
-      commandExecutor: commands['commandExecutor'](aggregatedS3),
+      commandExecutor: commandExecutor(aggregatedS3)
     };
   };
 
