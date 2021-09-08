@@ -10,10 +10,10 @@ A typical, simple configuration looks like this:
 
 ```json
 {
-  region: 'us-east-1',
-  credentials: {
-    secretAccessKey: 'test',
-    accessKeyId: 'test'
+  "region": "us-east-1",
+  "credentials": {
+    "secretAccessKey": "test",
+    "accessKeyId": "test"
   }
 }
 ```
