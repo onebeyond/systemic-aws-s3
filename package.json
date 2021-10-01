@@ -7,7 +7,9 @@
     "infra:up": "docker-compose --file ./docker/test/docker-compose.yaml pull && docker-compose --file ./docker/test/docker-compose.yaml up -d --force-recreate",
     "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
     "test": "npm run infra:up && NODE_ENV=test jest && npm run infra:down",
-    "test:watch": "npm run infra:up && NODE_ENV=test jest --watchAll && npm run infra:down"
+    "test:watch": "npm run infra:up && NODE_ENV=test jest --watchAll && npm run infra:down",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix"
   },
   "repository": {
     "type": "git",
@@ -36,6 +38,11 @@
     "wait-on": "^6.0.0"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "jest": "^27.1.0",
     "jest-watch-typeahead": "^0.6.4"
   }
