@@ -36,6 +36,9 @@
     "wait-on": "^6.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.2.0",
+    "@commitlint/config-conventional": "^13.2.0",
+    "husky": "^7.0.2",
     "jest": "^27.1.0",
     "jest-watch-typeahead": "^0.6.4"
   }
