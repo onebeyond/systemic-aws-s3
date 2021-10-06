@@ -8,6 +8,7 @@
     "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
     "test": "npm run infra:up && NODE_ENV=test jest && npm run infra:down",
     "test:watch": "npm run infra:up && NODE_ENV=test jest --watchAll && npm run infra:down",
+    "prepare": "husky install",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix"
   },
@@ -38,6 +39,9 @@
     "wait-on": "^6.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.2.0",
+    "@commitlint/config-conventional": "^13.2.0",
+    "husky": "^7.0.2",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.24.2",
