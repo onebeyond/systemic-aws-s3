@@ -1,6 +1,6 @@
 {
   "name": "@guidesmiths/systemic-aws-s3",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A systemic component for AWS S3 service",
   "main": "index.js",
   "scripts": {
@@ -10,10 +10,10 @@
     "test:watch": "npm run infra:up && NODE_ENV=test jest --watchAll && npm run infra:down",
     "prepare": "husky install",
     "release": "standard-version",
-		"release:major": "npm run release -- --release-as major",
-		"release:minor": "npm run release -- --release-as minor",
-		"release:patch": "npm run release -- --release-as patch",
-		"release:alpha": "npm run release -- --prerelease alpha",
+    "release:major": "npm run release -- --release-as major",
+    "release:minor": "npm run release -- --release-as minor",
+    "release:patch": "npm run release -- --release-as patch",
+    "release:alpha": "npm run release -- --prerelease alpha",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix"
   },
