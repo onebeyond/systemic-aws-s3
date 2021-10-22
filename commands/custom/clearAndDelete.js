@@ -18,16 +18,16 @@ const deleteBucketConfig = (bucketName) => ({
   commandName:'deleteBucket'
 })
 
-const clearAndDelete = async ({ bucketName }) => {
-  const res = await s3.commandExecutor(listObjectsConfig(bucketName));
+const clearAndDelete = client => async ({ bucketName }) => {
+  const res = await client.commandExecutor(listObjectsConfig(bucketName));
 
   if (res.Contents) {
     await Promise.all(
-      res.Contents.map((object) => s3.commandExecutor(deleteObjectConfig(bucketName, object)))
+      res.Contents.map((object) => client.commandExecutor(deleteObjectConfig(bucketName, object)))
     );
   }
 
-  return s3.commandExecutor(deleteBucketConfig(bucketName))
+  return client.commandExecutor(deleteBucketConfig(bucketName))
 };
 
 module.exports = clearAndDelete;
