@@ -1,5 +1,4 @@
 const {createBucket} = require('../helpers/createBucket')
-const {emptyBucket} = require('../helpers/emptyBucket')
 const {startS3Component} = require('../helpers/startS3Component')
 const localstackConfig = require('../fixtures/localstackConfig')
 const {streamToString} = require("../helpers/streamToString");
@@ -11,10 +10,6 @@ describe('Systemic S3 - Clear and delete', () => {
   beforeAll(async () => {
     s3 = await startS3Component(localstackConfig);
     await createBucket(s3, bucketName)
-  });
-
-  beforeEach(async () => {
-    await emptyBucket(s3, bucketName)
   });
 
   it('should delete the bucket even if it has content or not', async () => {
@@ -30,11 +25,18 @@ describe('Systemic S3 - Clear and delete', () => {
 
     const {Buckets} = await s3.commandExecutor({commandParams:{}, commandName: 'listBuckets'})
     expect(Buckets.length).toEqual(0);
+  });
 
-  });
   it('should fail if the bucket does not exists', async () => {
+    await expect(s3.commandExecutor({commandParams:{Bucket:'non-existing-bucket'}, commandName:'clearAndDelete'}))
+      .rejects
+      .toThrowError('NoSuchBucket')
   });
+
   it('should fail if the parameters are wrong defined', async () => {
+    await expect(s3.commandExecutor({commandParams:{bucket:'non-existing-bucket'}, commandName:'clearAndDelete'}))
+      .rejects
+      .toThrowError('No value provided for input HTTP label: Bucket.')
   });
 
 });
