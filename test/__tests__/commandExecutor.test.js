@@ -72,7 +72,7 @@ describe('Systemic S3 - Command executor', () => {
   it('should throw an error trying to execute an unexisting command', async () => {
       await expect(s3.commandExecutor({commandParams: {}, commandName: 'unexistingCommand'}))
         .rejects
-        .toThrowError('client[commandName] is not a function');
+        .toThrowError('s3Client[commandName] is not a function');
   });
 
 });
