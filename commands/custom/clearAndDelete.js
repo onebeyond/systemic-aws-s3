@@ -1,33 +1,16 @@
-const listObjectsConfig = (bucketName) => ({
-  commandParams: { Bucket: bucketName },
-  commandName: 'listObjectsV2'
-})
-
-const deleteObjectConfig = (bucketName, object) => ({
-  commandParams: {
-    Bucket: bucketName,
-    Key: object.Key,
-  },
-  commandName: 'deleteObject'
-})
-
-const deleteBucketConfig = (bucketName) => ({
-  commandParams: {
-    Bucket: bucketName
-  },
-  commandName:'deleteBucket'
-})
-
-const clearAndDelete = client => async ({ bucketName }) => {
-  const res = await client.commandExecutor(listObjectsConfig(bucketName));
+const clearAndDelete = client => async ({ Bucket }) => {
+  const res = await client['listObjectsV2']({ Bucket });
 
   if (res.Contents) {
     await Promise.all(
-      res.Contents.map((object) => client.commandExecutor(deleteObjectConfig(bucketName, object)))
+      res.Contents.map((object) => client['deleteObject']({
+        Bucket,
+        Key: object.Key,
+      }))
     );
   }
 
-  return client.commandExecutor(deleteBucketConfig(bucketName))
+  return client['deleteBucket']({ Bucket });
 };
 
 module.exports = clearAndDelete;
