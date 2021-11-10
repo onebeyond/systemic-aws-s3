@@ -5,7 +5,7 @@ module.exports = s3Client => async ({ commandParams, commandName }) => {
   try {
     debug(`Calling ${commandName}`);
     const data = customClient[commandName]
-      ? await customClient[commandName](customClient)(commandParams)
+      ? await customClient[commandName](s3Client)(commandParams)
       : await s3Client[commandName](commandParams);
     debug(`${commandName} executed successfully`);
     return data;
