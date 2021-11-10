@@ -6,8 +6,8 @@
   "scripts": {
     "infra:up": "docker-compose --file ./docker/test/docker-compose.yaml pull && docker-compose --file ./docker/test/docker-compose.yaml up -d --force-recreate",
     "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
-    "test": "npm run infra:up && NODE_ENV=test jest && npm run infra:down",
-    "test:watch": "npm run infra:up && NODE_ENV=test jest --watchAll && npm run infra:down"
+    "test": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit && npm run infra:down",
+    "test:watch": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit --watchAll && npm run infra:down"
   },
   "repository": {
     "type": "git",
