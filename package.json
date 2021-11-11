@@ -8,7 +8,6 @@
     "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
     "test": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit && npm run infra:down",
     "test:watch": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit --watchAll && npm run infra:down",
-    "prepare": "husky install",
     "release": "standard-version",
     "release:major": "npm run release -- --release-as major",
     "release:minor": "npm run release -- --release-as minor",
@@ -42,6 +41,13 @@
     "debug": "^4.3.2",
     "require-all": "^3.0.0",
     "wait-on": "^6.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test --watchAll=false"
+    }
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.0",
