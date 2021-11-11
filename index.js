@@ -1,5 +1,5 @@
 const debug = require('debug')('systemic-aws-s3');
-const { S3, S3Client } = require("@aws-sdk/client-s3");
+const { S3, S3Client } = require('@aws-sdk/client-s3');
 
 const commandExecutor = require('./commands/commandExecutor');
 
@@ -19,6 +19,6 @@ module.exports = () => {
   };
 
   return {
-    start,
+    start
   };
 };

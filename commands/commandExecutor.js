@@ -1,5 +1,6 @@
+const path = require('path');
 const debug = require('debug')('systemic-aws-s3');
-const customClient = require('require-all')(__dirname + '/custom');
+const customClient = require('require-all')(path.join(__dirname, '/custom'));
 
 module.exports = s3Client => async ({ commandParams, commandName }) => {
   try {

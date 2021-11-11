@@ -1,7 +1,7 @@
-const {createBucket} = require('../helpers/createBucket')
-const {startS3Component} = require('../helpers/startS3Component')
+const { createBucket } = require('../helpers/createBucket')
+const { startS3Component } = require('../helpers/startS3Component')
 const localstackConfig = require('../fixtures/localstackConfig')
-const {streamToString} = require("../helpers/streamToString");
+const { streamToString } = require('../helpers/streamToString');
 
 const bucketName = 'test-bucket';
 let s3;
@@ -15,28 +15,27 @@ describe('Systemic S3 - Clear and delete', () => {
   it('should delete the bucket even if it has content or not', async () => {
     const bucketObjectKey = 'example1.txt'
     const bucketObjectBody = 'Example 1 text'
-    const commandParamsUpload = {Bucket: bucketName, Key: bucketObjectKey, Body: bucketObjectBody}
-    await s3.commandExecutor({commandParams: commandParamsUpload, commandName: 'putObject'});
-    const {Body} = await s3.commandExecutor({commandParams:{Bucket: bucketName, Key: bucketObjectKey}, commandName: 'getObject'})
+    const commandParamsUpload = { Bucket: bucketName, Key: bucketObjectKey, Body: bucketObjectBody }
+    await s3.commandExecutor({ commandParams: commandParamsUpload, commandName: 'putObject' });
+    const { Body } = await s3.commandExecutor({ commandParams: { Bucket: bucketName, Key: bucketObjectKey }, commandName: 'getObject' })
 
     const response = await streamToString(Body)
     expect(response).toEqual(bucketObjectBody);
-    await s3.commandExecutor({commandParams:{Bucket:bucketName}, commandName:'clearAndDelete'})
+    await s3.commandExecutor({ commandParams: { Bucket: bucketName }, commandName: 'clearAndDelete' })
 
-    const {Buckets} = await s3.commandExecutor({commandParams:{}, commandName: 'listBuckets'})
+    const { Buckets } = await s3.commandExecutor({ commandParams: {}, commandName: 'listBuckets' })
     expect(Buckets.length).toEqual(0);
   });
 
   it('should fail if the bucket does not exists', async () => {
-    await expect(s3.commandExecutor({commandParams:{Bucket:'non-existing-bucket'}, commandName:'clearAndDelete'}))
+    await expect(s3.commandExecutor({ commandParams: { Bucket: 'non-existing-bucket' }, commandName: 'clearAndDelete' }))
       .rejects
       .toThrowError('NoSuchBucket')
   });
 
   it('should fail if the parameters are wrong defined', async () => {
-    await expect(s3.commandExecutor({commandParams:{bucket:'non-existing-bucket'}, commandName:'clearAndDelete'}))
+    await expect(s3.commandExecutor({ commandParams: { bucket: 'non-existing-bucket' }, commandName: 'clearAndDelete' }))
       .rejects
       .toThrowError('No value provided for input HTTP label: Bucket.')
   });
-
 });

@@ -6,7 +6,7 @@ const listObjectsConfig = (bucketName) => ({
 const deleteObjectConfig = (bucketName, object) => ({
   commandParams: {
     Bucket: bucketName,
-    Key: object.Key,
+    Key: object.Key
   },
   commandName: 'deleteObject'
 })

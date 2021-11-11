@@ -1,16 +1,16 @@
 const clearAndDelete = client => async ({ Bucket }) => {
-  const res = await client['listObjectsV2']({ Bucket });
+  const res = await client.listObjectsV2({ Bucket });
 
   if (res.Contents) {
     await Promise.all(
-      res.Contents.map((object) => client['deleteObject']({
+      res.Contents.map((object) => client.deleteObject({
         Bucket,
-        Key: object.Key,
+        Key: object.Key
       }))
     );
   }
 
-  return client['deleteBucket']({ Bucket });
+  return client.deleteBucket({ Bucket });
 };
 
 module.exports = clearAndDelete;
