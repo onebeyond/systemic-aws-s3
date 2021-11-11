@@ -35,13 +35,6 @@ const api = await start({ config }); // configuration similar to the one above
 
 As the AWS API has dozens of commands, intead of having one wrapper for each of them, the component exposes one single command `commandExecutor` that can be used to call any of the commands exposed by the api:
 
-```js
-const res = await api.commandExecutor({
-  commandParams: { <params of the method> },
-  commandName: <name of the method>
-});
-```
-
 For example, to list all the objects in a specific bucket:
 
 ```js
@@ -62,14 +55,7 @@ In the future, this component will also expose some custom commands not supporte
 
 ### How to test it
 
-Set up / tear down local resources running:
-
-```bash
-npm run infra:up
-npm run infra:down
-```
-
-Once resources are up you can test the component running one of this commands:
+You can test the whole test suite running one of these commands:
 
 ```bash
 # all tests will be executed once
@@ -79,3 +65,9 @@ npm run test
 npm run test:watch
 ```
 
+In case that you want to just execute a certain test case, you can also use these scripts to up / tear down the infra.
+
+```bash
+npm run infra:up
+npm run infra:down
+```
