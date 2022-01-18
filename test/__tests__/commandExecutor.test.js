@@ -1,15 +1,9 @@
-const {
-  ListObjectsCommand,
-  DeleteObjectCommand,
-  PutObjectCommand
-} = require("@aws-sdk/client-s3");
-
-const {createBucket} = require('../helpers/createBucket')
-const {deleteBucket} = require('../helpers/deleteBucket')
-const {emptyBucket} = require('../helpers/emptyBucket')
-const {startS3Component} = require('../helpers/startS3Component')
+const { createBucket } = require('../helpers/createBucket')
+const { deleteBucket } = require('../helpers/deleteBucket')
+const { emptyBucket } = require('../helpers/emptyBucket')
+const { startS3Component } = require('../helpers/startS3Component')
 const localstackConfig = require('../fixtures/localstackConfig')
-const {streamToString} = require("../helpers/streamToString");
+const { streamToString } = require('../helpers/streamToString');
 
 const bucketName = 'test-bucket';
 let s3;
@@ -32,11 +26,11 @@ describe('Systemic S3 - Command executor', () => {
   it('should execute the "GetObject" command and retrieve it', async () => {
     const bucketObjectKey = 'example1.txt'
     const bucketObjectBody = 'Example 1 text'
-    const commandParamsUpload = {Bucket: bucketName, Key: bucketObjectKey, Body: bucketObjectBody}
+    const commandParamsUpload = { Bucket: bucketName, Key: bucketObjectKey, Body: bucketObjectBody }
 
-    await s3.commandExecutor({commandParams: commandParamsUpload, commandName: 'putObject'});
-    const commandParams = {Bucket: bucketName, Key: bucketObjectKey}
-    const {Body} = await s3.commandExecutor({commandParams, commandName: 'getObject'})
+    await s3.commandExecutor({ commandParams: commandParamsUpload, commandName: 'putObject' });
+    const commandParams = { Bucket: bucketName, Key: bucketObjectKey }
+    const { Body } = await s3.commandExecutor({ commandParams, commandName: 'getObject' })
 
     const response = await streamToString(Body)
     expect(response).toEqual(bucketObjectBody);
@@ -44,15 +38,14 @@ describe('Systemic S3 - Command executor', () => {
 
   it('should fail trying to get an object not stored in the bucket', async () => {
     const bucketObjectKey = 'example1.txt'
-    const commandParams = {Bucket: bucketName, Key: bucketObjectKey}
+    const commandParams = { Bucket: bucketName, Key: bucketObjectKey }
     const commandName = 'getObject'
-    await expect(s3.commandExecutor({commandParams, commandName}))
+    await expect(s3.commandExecutor({ commandParams, commandName }))
       .rejects
       .toThrowError(new Error('NoSuchKey'));
   });
 
   it('should list 2 objects stored in the bucket', async () => {
-
     const commandParams1 = {
       Bucket: bucketName,
       Key: 'example1.txt',
@@ -65,14 +58,19 @@ describe('Systemic S3 - Command executor', () => {
       Body: 'Example 2 text'
     }
 
-    await s3.commandExecutor({commandParams: commandParams1, commandName: 'putObject'})
-    await s3.commandExecutor({commandParams: commandParams2, commandName: 'putObject'})
+    await s3.commandExecutor({ commandParams: commandParams1, commandName: 'putObject' })
+    await s3.commandExecutor({ commandParams: commandParams2, commandName: 'putObject' })
 
-    const res = await s3.commandExecutor({commandParams: {Bucket: bucketName}, commandName: 'listObjects'})
+    const res = await s3.commandExecutor({ commandParams: { Bucket: bucketName }, commandName: 'listObjects' })
 
     expect(res.Contents).toHaveLength(2);
     expect(res.Contents[0].Key).toBe('example1.txt');
     expect(res.Contents[1].Key).toBe('example2.txt');
   });
 
+  it('should throw an error trying to execute an unexisting command', async () => {
+    await expect(s3.commandExecutor({ commandParams: {}, commandName: 'unexistingCommand' }))
+      .rejects
+      .toThrowError('s3Client[commandName] is not a function');
+  });
 });

@@ -1,13 +1,17 @@
+const path = require('path');
 const debug = require('debug')('systemic-aws-s3');
+const customClient = require('require-all')(path.join(__dirname, '/custom'));
 
-module.exports = client => async ({ commandParams, commandName }) => {
-
+module.exports = s3Client => async ({ commandParams, commandName }) => {
   try {
     debug(`Calling ${commandName}`);
-    const data = await client[commandName](commandParams);
+    const data = customClient[commandName]
+      ? await customClient[commandName](s3Client)(commandParams)
+      : await s3Client[commandName](commandParams);
     debug(`${commandName} executed successfully`);
     return data;
   } catch (error) {
+    console.log(error.message)
     debug(`Error executing ${commandName}: ${error.message}`);
     throw error;
   }

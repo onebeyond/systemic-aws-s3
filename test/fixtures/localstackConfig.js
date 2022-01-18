@@ -4,8 +4,8 @@ module.exports = {
     endpoint: 'http://localhost:4566',
     credentials: {
       secretAccessKey: 'test',
-      accessKeyId: 'test',
+      accessKeyId: 'test'
     },
-    forcePathStyle: true,
+    forcePathStyle: true
   }
 }

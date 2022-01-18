@@ -11,6 +11,6 @@ module.exports = {
   setupFilesAfterEnv: [require.resolve('./setup-env')],
   watchPlugins: [
     'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+    'jest-watch-typeahead/testname'
+  ]
 };

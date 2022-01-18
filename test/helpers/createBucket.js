@@ -2,7 +2,7 @@ const commandConfig = (bucketName) => ({
   commandParams: {
     Bucket: bucketName
   },
-  commandName:'createBucket'
+  commandName: 'createBucket'
 })
 const createBucket = (s3, bucketName) => s3.commandExecutor(commandConfig(bucketName))
 
