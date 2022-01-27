@@ -8,6 +8,7 @@
     "infra:down": "docker-compose --file ./docker/test/docker-compose.yaml down",
     "test": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit && npm run infra:down",
     "test:watch": "npm run infra:up && NODE_ENV=test jest --runInBand --forceExit --watchAll && npm run infra:down",
+    "prepare": "husky install",
     "release": "standard-version",
     "release:major": "npm run release -- --release-as major",
     "release:minor": "npm run release -- --release-as minor",
