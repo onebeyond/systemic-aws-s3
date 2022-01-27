@@ -27,8 +27,12 @@
   ],
   "contributors": [
     {
+      "name": "Roberto Hernández",
+      "email": "roberto.hernandez@dcsl.com"
+    },
+    {
       "name": "Íñigo Marquínez Prado",
-      "email": "inigo.marquinez@guidesmiths.com"
+      "email": "inigo.marquinez@dcsl.com"
     }
   ],
   "license": "MIT",
