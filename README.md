@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/fb29150fdbf11ffb3b83/maintainability)](https://codeclimate.com/github/onebeyond/systemic-aws-s3/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fb29150fdbf11ffb3b83/test_coverage)](https://codeclimate.com/github/onebeyond/systemic-aws-s3/test_coverage)
+
 # Systemic AWS S3
 
 A [Systemic](https://guidesmiths.github.io/systemic/#/) component for the [AWS S3 SDK v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html).
